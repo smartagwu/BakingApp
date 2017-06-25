@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BakingApp</string>
+    <string name="title_activity_cake_recipe">CakeRecipeActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ingredientlabel" translatable="true">Ingredients List</string>
+    <string name="steplabel" translatable="true">View Steps</string>
+    <string name="errorText" translatable="true">No internet Connection on device!</string>
+    <string name="pielabel" translatable="true">Pie</string>
+    <string name="cakelabel" translatable="true">Cake</string>
+    <string name="cakelistlabel" translatable="true">Cake Lists</string>
+    <string name="title_activity_video">VideoActivity</string>
+    <string name="retrival_error">No result Retrieved!</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+</resources>
