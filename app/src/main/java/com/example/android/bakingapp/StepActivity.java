@@ -20,6 +20,9 @@ public class StepActivity extends AppCompatActivity {
 
     private int Position;
     ActionBar actionBar;
+    private CakeRecipeFragment cakeRecipeFragment;
+    private VideoFragment videoFragment;
+    String mDescription;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +33,17 @@ public class StepActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        CakeRecipeFragment cakeRecipeFragment = new CakeRecipeFragment();
-        VideoFragment videoFragment = new VideoFragment();
+        cakeRecipeFragment = new CakeRecipeFragment();
+        videoFragment = new VideoFragment();
 
+        //if framelayout is not null, then device is a tablet. so we place the videofragment in the framelayout
         if (findViewById(R.id.videofragment) != null){
             fragmentManager.beginTransaction().add(R.id.videofragment, videoFragment).commit();
+
+
         }
 
+        //Retrieve all passed data from the intent as Bundle
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
 
@@ -45,8 +52,19 @@ public class StepActivity extends AppCompatActivity {
             Position = bundle.getInt("position");
             actionBar.setTitle(bundle.getString("name"));
         }
-        cakeRecipeFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().add(R.id.cakerecipefragment, cakeRecipeFragment).commit();
+
+        //if videoFragment is already added to the activity, do not add cakeRecipeFragment
+        if (savedInstanceState != null){
+            boolean b = savedInstanceState.getBoolean("isFragmentAdded");
+            if (b == true){
+                //do something
+                actionBar.setTitle(mDescription);
+            }
+        }else {
+
+            cakeRecipeFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().add(R.id.cakerecipefragment, cakeRecipeFragment).commit();
+        }
 
     }
 
@@ -57,10 +75,13 @@ public class StepActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    //handles each recyclerview click from the Cake recipe fragment
     public void onClickSteps(String Description, String videoURL, String sDescription) {
 
         VideoFragment videoFragment = new VideoFragment();
         Bundle bundle = new Bundle();
+        mDescription = sDescription;
         bundle.putString("description", Description);
         bundle.putString("videoURL", videoURL);
 
@@ -72,8 +93,11 @@ public class StepActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+                //if framelayout is not null, then device is a tablet.
+                // so we replace initial video fragment with a new one carrying data as argument
                 if (findViewById(R.id.videofragment) != null){
                     transaction.replace(R.id.videofragment, videoFragment);
+
                 }
                 transaction.replace(R.id.cakerecipefragment, videoFragment).addToBackStack(null);
                 transaction.commit();
@@ -83,4 +107,11 @@ public class StepActivity extends AppCompatActivity {
 
         actionBar.setTitle(sDescription);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        boolean isFragmentAdded = videoFragment.isAdded();
+            outState.putBoolean("isFragmentAdded", isFragmentAdded);
+        }
 }

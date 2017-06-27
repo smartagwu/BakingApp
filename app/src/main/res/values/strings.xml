@@ -11,8 +11,9 @@
     <string name="cakelabel" translatable="true">Cake</string>
     <string name="cakelistlabel" translatable="true">Cake Lists</string>
     <string name="title_activity_video">VideoActivity</string>
-    <string name="retrival_error">No result Retrieved!</string>
+    <string name="retrival_error" translatable="true">No result Retrieved!</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="widgetErrorText" translatable="true">Error loading Data, Check internet Connection!</string>
 
 </resources>

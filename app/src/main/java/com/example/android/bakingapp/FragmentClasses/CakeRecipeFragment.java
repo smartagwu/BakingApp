@@ -46,9 +46,6 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float width = displayMetrics.widthPixels/displayMetrics.density;
-
         }
 
 
@@ -57,11 +54,7 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
         mTextView.setVisibility(View.VISIBLE);
     }
 
-    public void displayRecyclerView(){
-        includeLayout.setVisibility(View.VISIBLE);
-        mTextView.setVisibility(View.INVISIBLE);
-    }
-
+    //query data from the internet
     @Override
     public Loader<JSONArray> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<JSONArray>(getContext()) {

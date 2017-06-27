@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int LOADERMANAGER_ID = 1;
     private ProgressBar mProgressBar;
     private TextView mTextView;
-    private ImageView mImageView;
     private Toolbar mToolbar;
 
     @Override
@@ -41,13 +40,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recyclerviewlayout);
 
+        //find all views by id in recyclerviewlayout
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mTextView= (TextView) findViewById(R.id.errorText);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        //use the specified tool bar as our action bar
         setSupportActionBar(mToolbar);
 
+        //initialise the adapter for the recyclerview
         adapter = new MainActivityAdapter(this, this);
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
 
+        //Check for internet connectivity before initializing the loader with loadermanager
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         if (connectivityManager.getActiveNetworkInfo() != null  && connectivityManager.getActiveNetworkInfo().isConnected()){
             getSupportLoaderManager().initLoader(LOADERMANAGER_ID, null, this);
@@ -68,11 +71,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onError(){
         mRecyclerView.setVisibility(View.INVISIBLE);
         mTextView.setVisibility(View.VISIBLE);
-    }
-
-    public void displayRecyclerView(){
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mTextView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -93,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return false;
     }
 
+    //Start loading for data
     @Override
     public Loader<JSONArray> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<JSONArray>(this) {
@@ -150,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             onError();
             mTextView.setText("No result Retrieved!");
         }else {
+            //send our retrieved data to the recyclerview's adapter
             adapter.swapValue(data);
         }
     }
@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getSupportLoaderManager().initLoader(LOADERMANAGER_ID, null, this);
     }
 
+    //Method that handles each recyclerview item click
     @Override
     public void onClick(int position, String name) {
 

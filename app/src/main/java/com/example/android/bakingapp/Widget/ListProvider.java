@@ -7,6 +7,8 @@ import android.widget.RemoteViewsService;
 import com.example.android.bakingapp.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by AGWU SMART ELEZUO on 6/24/2017.
@@ -17,11 +19,21 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
     private Context mContext;
     private JSONArray  mArray;
     private static final int[] mImages = {R.drawable.nutellapie1, R.drawable.brownies1, R.drawable.yellowcake1, R.drawable.cheesecake1};
-    private static final String[] s = {"Nutella Pie", "Brownies", "Yellow Cake", "Cheesecake"};
 
     public ListProvider(Context context, Intent i){
         mContext = context;
+        if (i.hasExtra("arrayString")) {
+            String s = i.getStringExtra("arrayString");
+            try {
+                JSONArray jsonArray = new JSONArray(s);
+                mArray = jsonArray;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
+
     @Override
     public void onCreate() {
 
@@ -39,15 +51,25 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return s.length;
+        if (mArray == null) return 0;
+        return mArray.length();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widgetlistitem);
 
-        views.setImageViewResource(R.id.imgIcon, mImages[position]);
-        views.setTextViewText(R.id.cakeType, s[position]);
+        try {
+            JSONObject object = mArray.getJSONObject(position);
+            views.setImageViewResource(R.id.imgIcon, mImages[position]);
+            views.setTextViewText(R.id.cakeType, object.getString("name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent();
+        intent.putExtra("position", position);
+        views.setOnClickFillInIntent(R.id.cakeType, intent);
+
         return views;
     }
 
