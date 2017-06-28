@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.android.bakingapp.FragmentClasses.CakeRecipeFragment;
@@ -39,8 +41,6 @@ public class StepActivity extends AppCompatActivity {
         //if framelayout is not null, then device is a tablet. so we place the videofragment in the framelayout
         if (findViewById(R.id.videofragment) != null){
             fragmentManager.beginTransaction().add(R.id.videofragment, videoFragment).commit();
-
-
         }
 
         //Retrieve all passed data from the intent as Bundle
@@ -69,21 +69,33 @@ public class StepActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.settings, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
             onBackPressed();
+        }else if (item.getItemId() == R.id.settings){
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return  true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     //handles each recyclerview click from the Cake recipe fragment
-    public void onClickSteps(String Description, String videoURL, String sDescription) {
+    public void onClickSteps(String Description, String videoURL, String sDescription, String thumbnailUrl) {
 
         VideoFragment videoFragment = new VideoFragment();
         Bundle bundle = new Bundle();
         mDescription = sDescription;
         bundle.putString("description", Description);
         bundle.putString("videoURL", videoURL);
+        bundle.putString("thumbnailUrl", thumbnailUrl);
 
         if (bundle != null) {
             if (!isFinishing()) {
@@ -97,10 +109,11 @@ public class StepActivity extends AppCompatActivity {
                 // so we replace initial video fragment with a new one carrying data as argument
                 if (findViewById(R.id.videofragment) != null){
                     transaction.replace(R.id.videofragment, videoFragment);
-
+                    transaction.commit();
+                }else {
+                    transaction.replace(R.id.cakerecipefragment, videoFragment).addToBackStack(null);
+                    transaction.commit();
                 }
-                transaction.replace(R.id.cakerecipefragment, videoFragment).addToBackStack(null);
-                transaction.commit();
 
             }
         }

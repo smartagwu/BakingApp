@@ -5,9 +5,11 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -29,6 +31,22 @@ public class BakingAppWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String preferenceString = sharedPreferences.getString(context.getResources().getString(R.string.listPreferencekey), context.getResources().getString(R.string.nutella_pie_key));
+
+        String name;
+
+        if (preferenceString == context.getResources().getString(R.string.nutella_pie_key)){
+            name = "Nutella Pie";
+        }else if (preferenceString == context.getResources().getString(R.string.Brownies_key)){
+            name = "Brownies";
+        }else if (preferenceString == context.getResources().getString(R.string.yello_cake_key)){
+            name ="Yellow Cake";
+        }else{
+            name = "Cheese Cake";
+        }
+
+        views.setTextViewText(R.id.recipeName, name);
             Intent intent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

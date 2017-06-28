@@ -25,6 +25,10 @@
             android:name=".StepActivity"
             android:label="Steps" />
 
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings" />
+
         <receiver android:name=".Widget.BakingAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Item"
+        android:title="Favourite Recipe"
         android:id="@+id/settings"
         android:orderInCategory="1"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 </menu>

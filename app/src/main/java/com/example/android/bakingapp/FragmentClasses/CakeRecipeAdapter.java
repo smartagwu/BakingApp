@@ -30,7 +30,7 @@ public class CakeRecipeAdapter extends RecyclerView.Adapter<CakeRecipeAdapter.Ca
     }
 
     public interface ClickOnVideosListener{
-        void onClickVideos(String Description, String videoURL, String sDescription);
+        void onClickVideos(String Description, String videoURL, String sDescription, String thumbnailUrl);
     }
 
     @Override
@@ -95,18 +95,20 @@ public class CakeRecipeAdapter extends RecyclerView.Adapter<CakeRecipeAdapter.Ca
             String lDescription = null;
             String videoURL = null;
             String sDescription = null;
+            String thumbnailUrl = null;
 
             try {
                 JSONObject object = mArray.getJSONObject(getAdapterPosition());
                 sDescription = object.getString("shortDescription");
                 lDescription = object.getString("description");
                 videoURL = object.getString("videoURL");
+                thumbnailUrl = object.getString("thumbnailURL");
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            mClickOnVideosListener.onClickVideos(lDescription, videoURL, sDescription);
+            mClickOnVideosListener.onClickVideos(lDescription, videoURL, sDescription, thumbnailUrl);
         }
     }
 

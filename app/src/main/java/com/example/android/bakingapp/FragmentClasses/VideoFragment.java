@@ -15,9 +15,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.android.bakingapp.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -33,11 +36,12 @@ import com.google.android.exoplayer2.util.Util;
 public class VideoFragment extends Fragment{
 
     private String mDescription;
-    private String mVideoURL;
+    private String mVideoURL, thumbnailUrl;
     private SimpleExoPlayerView mPlayerView;
     private SimpleExoPlayer mPlayer;
     private TextView descriptionText;
     private ProgressBar mProgressBar;
+    private ImageView imageView;
 
     public static final String AUTOPLAY = "autoplay";
     public static final String CURRENT_WINDOW_INDEX = "current_window_index";
@@ -68,6 +72,7 @@ public class VideoFragment extends Fragment{
         mPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exoView);
         descriptionText = (TextView) view.findViewById(R.id.descriptionText);
         mProgressBar = (ProgressBar) view.findViewById(R.id.videoProgress);
+        imageView = (ImageView) view.findViewById(R.id.thumbnail);
 
         if (savedInstanceState != null) {
             playbackPosition = savedInstanceState.getLong(PLAYBACK_POSITION, 0);
@@ -79,9 +84,14 @@ public class VideoFragment extends Fragment{
         if (bundle != null){
             mDescription = bundle.getString("description");
             mVideoURL = bundle.getString("videoURL");
+            thumbnailUrl = bundle.getString("thumbnailUrl");
+        }else{
+            mDescription = getContext().getResources().getString(R.string.app_name);
+            mVideoURL = "";
+            thumbnailUrl = "";
         }
 
-
+        Glide.with(getContext()).asBitmap().load(thumbnailUrl).into(imageView);
         descriptionText.setText(mDescription);
 
         mPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector(), new DefaultLoadControl());

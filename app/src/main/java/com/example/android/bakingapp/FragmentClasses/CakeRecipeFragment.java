@@ -181,7 +181,7 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
     }
 
     @Override
-    public void onClickVideos(String Description, String videoURL, String sDescription) {
-        ((StepActivity) getActivity()).onClickSteps(Description, videoURL, sDescription);
+    public void onClickVideos(String Description, String videoURL, String sDescription, String thumbnailUrl) {
+        ((StepActivity) getActivity()).onClickSteps(Description, videoURL, sDescription, thumbnailUrl);
     }
 }
