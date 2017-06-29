@@ -4,6 +4,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.Utils.NetworkUtils;
@@ -40,12 +42,13 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
     private ProgressBar mProgressBar;
     private TextView mTextView;
     private LinearLayout includeLayout;
+    private ScrollView mScrollView;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
         }
 
 
@@ -119,6 +122,7 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mTextView = (TextView) view.findViewById(R.id.errorText);
         includeLayout = (LinearLayout) view.findViewById(R.id.includeLayout);
+        mScrollView = (ScrollView) view.findViewById(R.id.scrollview);
 
         adapter = new CakeRecipeAdapter(getContext(), this);
         mAdapter = new IngredientAdapter(getContext());
@@ -140,6 +144,11 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
         } else {
             onError();
             mTextView.setText(R.string.errorText);
+        }
+
+        if (savedInstanceState != null){
+            int i = savedInstanceState.getInt("position");
+            mScrollView.setVerticalScrollbarPosition(i);
         }
     }
 
@@ -183,5 +192,12 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onClickVideos(String Description, String videoURL, String sDescription, String thumbnailUrl) {
         ((StepActivity) getActivity()).onClickSteps(Description, videoURL, sDescription, thumbnailUrl);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int i = mScrollView.getVerticalScrollbarPosition();
+        outState.putInt("position", i);
     }
 }

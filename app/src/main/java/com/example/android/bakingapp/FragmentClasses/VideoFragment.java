@@ -91,8 +91,10 @@ public class VideoFragment extends Fragment{
             thumbnailUrl = "";
         }
 
-        Glide.with(getContext()).asBitmap().load(thumbnailUrl).into(imageView);
-        descriptionText.setText(mDescription);
+        if (imageView!= null && descriptionText!= null) {
+            Glide.with(getContext()).asBitmap().load(thumbnailUrl).into(imageView);
+            descriptionText.setText(mDescription);
+        }
 
         mPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector(), new DefaultLoadControl());
         mPlayerView.setPlayer(mPlayer);

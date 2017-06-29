@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private MainActivityAdapter adapter;
     private static final int LOADERMANAGER_ID = 1;
     private ProgressBar mProgressBar;
+    public boolean progress;
     private TextView mTextView;
     private Toolbar mToolbar;
 
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }else {
 
                     mProgressBar.setVisibility(View.VISIBLE);
+                    progress = true;
                     forceLoad();
                 }
             }
@@ -145,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<JSONArray> loader, JSONArray data) {
 
         mProgressBar.setVisibility(View.INVISIBLE);
+        progress = false;
         if (data == null){
             onError();
             mTextView.setText("No result Retrieved!");
@@ -169,6 +172,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         intent.putExtra("name", name);
         startActivity(intent);
 
+        }
+
+        public boolean getProgress(){
+            return progress;
         }
     }
 
