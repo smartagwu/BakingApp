@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,9 +51,13 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     public void onBindViewHolder(MainActivityAdapterViewHolder holder, int position) {
 
         String name = null;
+        String image = null;
+        int servings = 0;
         try {
             JSONObject jsonObject1 = mJsonArray.getJSONObject(position);
             name = jsonObject1.getString("name");
+            image = jsonObject1.getString("image");
+            servings = jsonObject1.getInt("servings");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,8 +67,15 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         }else {
             holder.mCakeTypename.setText(R.string.cakelabel);
         }
-        holder.mImageView.setImageResource(mImages[position]);
+
+        //Handle image load from server if url is present
+        if (image != "") {
+            holder.mImageView.setImageResource(mImages[position]);
+        }else if(image == ""){
+            Glide.with(mContext).asBitmap().load(image).into(holder.mImageView);
+        }
         holder.mCakeType.setText(name);
+        holder.mServings.setText(Integer.toString(servings));
     }
 
     @Override
@@ -72,7 +86,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
     public class MainActivityAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mCakeType, mCakeTypename;
+        private TextView mCakeType, mCakeTypename, mServings;
         public ImageView mImageView;
 
         public MainActivityAdapterViewHolder(View itemView) {
@@ -81,8 +95,9 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             mCakeType = (TextView) itemView.findViewById(R.id.cakeType);
             mImageView = (ImageView) itemView.findViewById(R.id.imgIcon);
             mCakeTypename = (TextView) itemView.findViewById(R.id.desc);
-            itemView.setOnClickListener(this);
+            mServings = (TextView) itemView.findViewById(R.id.servings);
 
+            itemView.setOnClickListener(this);
         }
 
         @Override

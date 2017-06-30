@@ -186,8 +186,10 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
                 e.printStackTrace();
             }
 
-            Uri uri = Uri.parse(image);
-            Glide.with(getContext()).asBitmap().load(uri).into(imageView);
+            if (image != "") {
+                Uri uri = Uri.parse(image);
+                Glide.with(getContext()).asBitmap().load(uri).into(imageView);
+            }
             adapter.swapArray(steps);
             mAdapter.swapArray(ingredient);
 
