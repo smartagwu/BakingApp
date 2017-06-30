@@ -30,9 +30,7 @@
        <ImageView
            android:id="@+id/imgIcon"
            android:layout_width="120dp"
-           android:background="@drawable/shape"
-           android:src="@drawable/brownies1"
-           android:layout_marginLeft="5dp"
+           android:layout_marginLeft="10dp"
            android:layout_height="95dp"
            android:layout_margin="5dp" />
 

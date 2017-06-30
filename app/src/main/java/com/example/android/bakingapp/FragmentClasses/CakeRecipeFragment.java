@@ -1,6 +1,7 @@
 package com.example.android.bakingapp.FragmentClasses;
 
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,11 +15,13 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.bakingapp.Utils.NetworkUtils;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.StepActivity;
@@ -43,6 +46,7 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextView;
     private LinearLayout includeLayout;
     private ScrollView mScrollView;
+    private ImageView imageView;
 
 
     @Override
@@ -123,6 +127,7 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
         mTextView = (TextView) view.findViewById(R.id.errorText);
         includeLayout = (LinearLayout) view.findViewById(R.id.includeLayout);
         mScrollView = (ScrollView) view.findViewById(R.id.scrollview);
+        imageView= (ImageView) view.findViewById(R.id.images);
 
         adapter = new CakeRecipeAdapter(getContext(), this);
         mAdapter = new IngredientAdapter(getContext());
@@ -158,6 +163,7 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
         JSONArray ingredient = null;
         JSONArray steps = null;
         int position = 0;
+        String image = null;
 
         mProgressBar.setVisibility(View.INVISIBLE);
         if (data == null){
@@ -174,9 +180,14 @@ public class CakeRecipeFragment extends Fragment implements LoaderManager.Loader
                 JSONObject ingredientObject = data.getJSONObject(position);
                 ingredient = ingredientObject.getJSONArray("ingredients");
                 steps = ingredientObject.getJSONArray("steps");
+                image = ingredientObject.getString("image");
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            Uri uri = Uri.parse(image);
+            Glide.with(getContext()).asBitmap().load(uri).into(imageView);
             adapter.swapArray(steps);
             mAdapter.swapArray(ingredient);
 

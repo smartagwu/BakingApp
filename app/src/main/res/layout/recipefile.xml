@@ -3,17 +3,27 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/scrollview"
     android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/images"
+            android:layout_marginBottom="10dp"/>
 
     <android.support.constraint.ConstraintLayout
         android:orientation="vertical"
@@ -95,6 +105,7 @@
             android:id="@+id/view2"
             app:layout_constraintHorizontal_bias="0.0" />
     </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </ScrollView>
 
